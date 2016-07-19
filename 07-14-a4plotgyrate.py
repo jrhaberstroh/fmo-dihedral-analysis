@@ -10,23 +10,23 @@ from rrid2resid_4BCL import rrid2resid_4BCL
 import os
 SRCDIR=os.path.dirname(os.path.realpath(__file__))
 
-raise NotImplementedError("This is a direct copy of RMSF code, not yet r_gyration code.")
 
-IN_FILE=SRCDIR+"/output/rmsf.txt.xvg"
+IN_FILE=SRCDIR+"/output/gyrate_4BCL.xvg"
 
-rmsf = jh_loadxvg(IN_FILE)
+r_gyration = jh_loadxvg(IN_FILE)
 
-backbone_index=np.arange(len(rmsf[:,1]))
-rrid_index = backbone_index / 3
-rrid_index = rrid_index.astype(int)
-print(rrid_index)
-resid_index = [rrid2resid_4BCL(i) for i in rrid_index]
 
-plt.plot(resid_index,rmsf[:,1], 'o')
-plt.xlim([-7,366])
-plt.xlabel("Residue Index")
-plt.ylabel("rmsf, nm")
-plt.title("RMSF of backbone atoms of 4BCL monomer")
-
-plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/backbone_rmsf.png", bbox_inches="tight")
+# backbone_index=np.arange(len(rmsf[:,1]))
+# rrid_index = backbone_index / 3
+# rrid_index = rrid_index.astype(int)
+# print(rrid_index)
+# resid_index = [rrid2resid_4BCL(i) for i in rrid_index]
+# 
+plt.plot(r_gyration[:,0], r_gyration[:,1])
+plt.title("Radius of gyration for 104ns FMO")
+plt.xlabel("Time, ns")
+plt.ylabel("Radius of gyration, nm")
+# 
+outname="gyrate_4BCL.png"
+plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname, bbox_inches="tight")
 plt.clf()

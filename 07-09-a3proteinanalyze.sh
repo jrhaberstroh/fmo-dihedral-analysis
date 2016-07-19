@@ -33,8 +33,14 @@ if [ "$ANGLE" = "true" ]; then
     ##! g_angle -f $TRAJ -n $SRCDIR/07-12-4BCL_propers.ndx -or $SRCDIR/output/angles_4BCL
 fi
 
-RGYRO=true
+RGYRO=false
 if [ "$RGYRO" = "true" ]; then
     echo "Running RGYRO"
     g_gyrate -f $TRAJ -s $FIT_TPR -o $SRCDIR/output/gyrate_4BCL
+fi
+
+CHI=true
+if [ "$CHI" = "true" ]; then
+    echo "Running sidechain rotamers"
+    g_chi -s $FIT_TPR -f $TRAJ -o $SRCDIR/output/rotamers_4BCL.xvg
 fi
