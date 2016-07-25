@@ -9,6 +9,7 @@ ILE   C  CA  CB CG1  CD
 LEU   C  CA  CB  CG CD1
 ASP   C  CA  CB  CG OD1
 ASN   C  CA  CB  CG OD1
+HIS   C  CA  CB  CG ND1 #NOTE: Gromacs uses rtp directives to specify type but names residues HIS
 HIE   C  CA  CB  CG ND1
 HIP   C  CA  CB  CG ND1
 HID   C  CA  CB  CG ND1
@@ -19,3 +20,6 @@ THR   C  CA  CB CG2
 VAL   C  CA  CB CG2
 SER   C  CA  CB  OG
 CYS   C  CA  CB  SG
+ALA
+GLY
+PRO

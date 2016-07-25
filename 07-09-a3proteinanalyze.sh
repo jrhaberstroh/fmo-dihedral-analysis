@@ -24,13 +24,15 @@ fi
 
 ANGLE=true
 if [ "$ANGLE" = "true" ]; then
-    echo "Running ANGLE"
-    ##! NOTE: None of this works
-    ##! USE CREATED INDEX
-    ##! mk_angndx -s $FIT_TPR -n $SRCDIR/output/dihedrals.ndx
-    ##! g_angle -f $TRAJ -n $SRCDIR/output/dihedrals.ndx -or $SRCDIR/output/angles_4BCL
-    ##! USE MANUAL INDEX
-    g_angle -f $TRAJ -n $SRCDIR/07-12-4BCL_propers_abridged.ndx -type dihedral -or $SRCDIR/output/dihedrals.xvg
+    ##t echo "Running ANGLE"
+    ##t echo "[ SidechainDihedrals ]"                         > $SRCDIR/output/dihedral_list.ndx
+    ##t $SRCDIR/07-24-sidechain_dihedrals.py | cut -d'#' -f2 >> $SRCDIR/output/dihedral_list.ndx
+    ##t $SRCDIR/07-24-sidechain_dihedrals.py | cut -d'#' -f1  > $SRCDIR/output/dihedral_list_resid.ndx
+    ##t g_angle -f $TRAJ -n $SRCDIR/output/dihedral_list.ndx -type dihedral -all \
+    ##t         -or $SCRATCH/2016-06-fmo500ns/dihedrals.trr                      \
+    ##t         -od $SCRATCH/2016-06-fmo500ns/dihedral_dist
+    python $SRCDIR/07-24-plotsidechain_dihedrals.py -f $SCRATCH/2016-06-fmo500ns/dihedrals.trr \
+            -resid $SRCDIR/output/dihedral_list_resid.ndx -o $SUBGROUP_BASE/2016-07-29/dihedral
 fi
 
 RGYRO=false

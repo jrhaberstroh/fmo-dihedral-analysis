@@ -29,4 +29,3 @@ ROTAMER=$SUBGROUP_BASE/2016-07-15/rotamersPPO_4BCL_wide.png
 composite $PC  $ROTAMER -compose atop -geometry '99.25%x93%+38+15' $OUTDIR/superimpose_rotpc.png
 composite $PCI $ROTAMER -compose atop -geometry '99.25%x93%+38+15' $OUTDIR/superimpose_rotpci.png
 
-
