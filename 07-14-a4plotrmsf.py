@@ -21,10 +21,20 @@ print(rrid_index)
 resid_index = [rrid2resid_4BCL(i) for i in rrid_index]
 
 plt.plot(resid_index,rmsf[:,1], 'o')
-plt.xlim([-7,366])
 plt.xlabel("Residue Index")
 plt.ylabel("rmsf, nm")
 plt.title("RMSF of backbone atoms of 4BCL monomer")
 
-plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/backbone_rmsf.png", bbox_inches="tight")
+outname="backbone_rmsf"
+
+fig = plt.gcf()
+fig.set_size_inches(8, 6, forward=True)
+plt.xlim([-7,366])
+plt.tight_layout()
+plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname + ".png")
+fig = plt.gcf()
+fig.set_size_inches(20, 6, forward=True)
+plt.xlim([-50,400])
+plt.tight_layout()
+plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname + "_wide" + ".png")
 plt.clf()

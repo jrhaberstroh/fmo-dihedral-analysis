@@ -27,6 +27,12 @@ plt.title("Radius of gyration for 104ns FMO")
 plt.xlabel("Time, ns")
 plt.ylabel("Radius of gyration, nm")
 # 
-outname="gyrate_4BCL.png"
-plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname, bbox_inches="tight")
+outname="gyrate_4BCL"
+
+plt.tight_layout()
+plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname + ".png")
+fig = plt.gcf()
+fig.set_size_inches(20, 6, forward=True)
+plt.tight_layout()
+plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname + "_wide" + ".png")
 plt.clf()

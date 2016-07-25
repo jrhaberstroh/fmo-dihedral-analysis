@@ -19,29 +19,48 @@ rotamers = jh_loadxvg(IN_FILE)
 # rrid_index = backbone_index / 3
 # rrid_index = rrid_index.astype(int)
 # print(rrid_index)
-# resid_index = [rrid2resid_4BCL(i) for i in rrid_index]
 #
+resid_index = [rrid2resid_4BCL(i) for i in (rotamers[:,0]-1)]
+resid_index[-1] = 366
+
 print(rotamers.shape)
-plt.plot(rotamers[:,0], rotamers[:,1], label="S2min")
-plt.plot(rotamers[:,0], rotamers[:,2], label="S2max")
+plt.plot(resid_index, rotamers[:,1], label="S2min")
+plt.plot(resid_index, rotamers[:,2], label="S2max")
 plt.title("Rotamers for 104ns FMO")
 leg = plt.legend(loc=3, fancybox=True)
 leg.get_frame().set_alpha(.5)
-plt.xlabel("Time, ns")
+plt.xlabel("Residue Index")
+plt.ylabel("S2 order parameter")
 
-outname="rotamersS2_4BCL.png"
-plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname, bbox_inches="tight")
-plt.clf()
+outname="rotamersS2_4BCL"
+plt.tight_layout()
+plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname + ".png")
+fig = plt.gcf()
+fig.set_size_inches(20, 6, forward=True)
+plt.tight_layout()
+plt.xlim([-50,400])
+plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname + "_wide" + ".png")
+plt.close()
+matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 
-plt.plot(rotamers[:,0], rotamers[:,3], label="Phi", linewidth=3, alpha = .7)
-plt.plot(rotamers[:,0], rotamers[:,4], label="Psi")
-plt.plot(rotamers[:,0], rotamers[:,5], label="Omega")
+plt.plot(resid_index, rotamers[:,3], label="Phi", linewidth=3, alpha = .7)
+plt.plot(resid_index, rotamers[:,4], label="Psi")
+plt.plot(resid_index, rotamers[:,5], label="Omega")
 plt.title("Rotamers for 104ns FMO")
 leg = plt.legend(loc=3, fancybox=True)
 leg.get_frame().set_alpha(.5)
-plt.xlabel("Time, ns")
+plt.xlabel("Residue Index")
+plt.ylabel("Mean Rotamer Cosine")
 
-outname="rotamersPPO_4BCL.png"
-plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname, bbox_inches="tight")
+outname="rotamersPPO_4BCL"
+
+plt.tight_layout()
+plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname + ".png")
+fig = plt.gcf()
+fig.set_size_inches(20, 6, forward=True)
+plt.tight_layout()
+plt.xlim([-50,400])
+plt.savefig("/home/jhaberstroh/Dropbox/GraduateSchool/subgroup/2016-07-15/" + outname + "_wide" + ".png")
 plt.clf()
+
 

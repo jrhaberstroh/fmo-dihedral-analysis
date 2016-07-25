@@ -22,7 +22,7 @@ if [ "$RMSF" = "true" ]; then
     g_rmsf -f $TRAJ -s $FIT_TPR -o $SRCDIR/output/rmsf.txt
 fi
 
-ANGLE=false
+ANGLE=true
 if [ "$ANGLE" = "true" ]; then
     echo "Running ANGLE"
     ##! NOTE: None of this works
@@ -30,7 +30,7 @@ if [ "$ANGLE" = "true" ]; then
     ##! mk_angndx -s $FIT_TPR -n $SRCDIR/output/dihedrals.ndx
     ##! g_angle -f $TRAJ -n $SRCDIR/output/dihedrals.ndx -or $SRCDIR/output/angles_4BCL
     ##! USE MANUAL INDEX
-    ##! g_angle -f $TRAJ -n $SRCDIR/07-12-4BCL_propers.ndx -or $SRCDIR/output/angles_4BCL
+    g_angle -f $TRAJ -n $SRCDIR/07-12-4BCL_propers_abridged.ndx -type dihedral -or $SRCDIR/output/dihedrals.xvg
 fi
 
 RGYRO=false
@@ -39,7 +39,7 @@ if [ "$RGYRO" = "true" ]; then
     g_gyrate -f $TRAJ -s $FIT_TPR -o $SRCDIR/output/gyrate_4BCL
 fi
 
-CHI=true
+CHI=false
 if [ "$CHI" = "true" ]; then
     echo "Running sidechain rotamers"
     g_chi -s $FIT_TPR -f $TRAJ -o $SRCDIR/output/rotamers_4BCL.xvg
