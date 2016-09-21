@@ -1,0 +1,125 @@
+## Separatrix values for exceptional dihedrals
+
+[ bad sp3 ]
+17 none
+56 none
+110 none
+148 none
+244 none
+254 none
+404 none
+510 none
+525 none
+#Note: ArgX4 always terrible
+548 none
+592 none
+#Note: skipped one ArgX4 because it was interesting?
+694 none
+#Note: 744 is ArgX4 with a change from bleeding to full transition
+908 none
+926 none
+950 none
+#970 shows ArgX4 with full, brief transitions; looks like dynamical phase change
+
+[ good sp2 onefold ]
+18 none
+40 none
+57 none
+111 none
+149 none
+156 none
+224 none
+245 none
+255 none
+282 none
+294 none
+401 none
+405 none
+406 none
+474 none
+511 none
+522 none
+#Note: ArgX5 always unimodal?
+549 none
+#570 kinda messed up but mostly unimodal
+570 none
+593 none
+600 none
+612 none
+618 none
+628 none
+643 none
+650 none
+660 none
+688 none
+695 none
+745 none
+763 none
+773 none
+788 none
+792 none
+814 none
+846 none
+909 none
+916 none
+920 none
+927 none
+944 none
+951 none
+958 none
+964 none
+971 none
+978 none
+1012 none
+
+[ good sp2 twofold ]
+94 -140,40
+100 -160,20
+122 -180,0
+182 -60,100
+198 -150,0
+288 -50,150
+300 0,170
+410 -30,150
+414 -50,130
+454 -180,25
+458 -140,30
+468 0,170
+478 0,170
+492 -20,160
+518 -10,180
+526 -150,30
+534 -10,170
+542 -180,0
+578 -10,170
+670 -160,20
+704 -40,140
+730 -60,150
+752 -30,150 #Undergoes dynamical transition
+810 -100,80
+834 0,180
+838 -160,20
+890 -20,160
+936 -30,160
+984 -10,160
+
+[ good sp2 nfold ]
+74 -180,-90,0,80
+138 -100,-20,70,160
+208 -150,-50,25,140
+216 -140,-40,50,140
+400 -120,0,120
+402 -120,0,120
+403 -120,-40,50,150
+496 -100,0,90,170
+500 -65,20,150
+842 -110,-30,70,150
+854 -125,-25,75,145 #Pair-wise basins 1,3+2,4
+1002 -140,-20,70,150
+
+[ sp2 trash ]
+278 none
+446 none
+450 none
+488 none
+726 none

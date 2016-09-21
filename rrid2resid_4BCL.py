@@ -7,13 +7,17 @@ def rrid2resid_4BCL(rrid):
         return rrid + 11
     elif rrid <=198:
         return rrid + 14
-    elif rrid <=348:
+    elif rrid <=349:
         return rrid + 17
     # BCL chromophore indices
-    elif rrid <=355:
-        rel_index = rrid - 348
+    elif rrid <=356:
+        rel_index = rrid - 349
         return (-rel_index)
-    elif rrid ==356:
-        return 0
     else:
         raise ValueError("Bad rrid in rrid2pdb: {}".format(rrid))
+
+__rrid2resid_4BCL__ = [rrid2resid_4BCL(x) for x in xrange(357)]
+
+import numpy as np
+def resid2rrid_4BCL(resid):
+    return np.where(__rrid2resid_4BCL__ == resid)[0]

@@ -1,6 +1,7 @@
 from __future__ import division, print_function
 import numpy as np
 import argparse
+import rrid2resid_4BCL
 from MDAnalysis.coordinates.xdrfile import libxdrfile2 as XDR
 import logging
 logging.basicConfig(level=logging.DEBUG)
@@ -9,6 +10,10 @@ SRCDIR=os.path.dirname(os.path.realpath(__file__))
 parser = argparse.ArgumentParser(description="")
 parser.add_argument("-f", type=str, required=True, help="[input] .trr file of sidechains")
 parser.add_argument("-resid", type=str, required=True, help="[input] list of residue ids for .trr file")
+parser.add_argument("-cdc", type=str, default=None, help="[input] cdc trajectory input file")
+parser.add_argument("-onlyplot", type=int, nargs="*", default=None, help="[input] List of dihedrals to plot (default=None, i.e. plot all dihedrals)")
+parser.add_argument("-sc", action="store_true", help="[input] plot sin/cos?")
+parser.add_argument("-chromo", type=str, default=None, help="[input] Chromophore number label for title")
 parser.add_argument("-o", type=str, default=None, help="[output] image destination basename")
 args   = parser.parse_args()
 # START: SAFESAVEPLOT
@@ -25,6 +30,10 @@ def safesaveplot(out=None, suffix=None, transparent=False, clf=True):
     else:
         plt.show()
 # END: SAFESAVEPLOT
+
+cdc = None
+if not args.cdc is None:
+    cdc = np.loadtxt(args.cdc)
 
 resid = np.loadtxt(args.resid)
 resid = resid.astype(int)
@@ -47,7 +56,8 @@ TRR = XDR.xdrfile_open(args.f, 'r')
 status = XDR.exdrOK
 while status == XDR.exdrOK:
     status,step,time, _, _, _, _ = XDR.read_trr(TRR, box, x, v, f)
-    x_t.append(x)
+    x_alloc = np.copy(x)
+    x_t.append(x_alloc)
 XDR.xdrfile_close(TRR)
 
 x_t = np.array(x_t)
@@ -64,33 +74,54 @@ if even_shape:
 else:
     ## If the array shape[1] is odd, pad the array by one, and set the 
     ##   padding value to remove the last two dihedrals
-    x_t = np.pad(x_t, ((0,0), (0,0), (0,1)), "constant", constant_values=0)
+    blank = np.zeros( (x_t.shape[0], 1, x_t.shape[2]) )
+    x_t = np.concatenate(x_t, blank)
     padding = -2
 N_dihedral_bulk = (x_t.shape[1]) // 2 * 3
 N_dihedral = N_dihedral_bulk + padding
 x_t = x_t.reshape( (x_t.shape[0], N_dihedral_bulk, 2) )
 x_t = x_t[:, :N_dihedral, :]
-print(x_t.shape)
-print(resid.shape)
+logging.debug(x_t.shape)
+logging.debug(resid.shape)
 
 angle_t = np.arctan2(x_t[:, :, 0], x_t[:, :, 1]) * 180.0 / np.pi
 
-for i in xrange(len(resid)):
-    ##? Is this useful? Let's just look at the angles for now...
-    ##? plt.plot(x_t[:, i, 1], label="sin")
-    ##? plt.plot(x_t[:, i, 0], label="cos")
-    ##? plt.xlabel("time/100ps")
-    ##? plt.ylabel("cos and sin of angle")
-    ##? plt.ylim([-1, 1])
-    ##? plt.title("timeseries for dihedral {}, resid {}".format(i, resid[i]))
-    ##? plt.legend()
-    ##? safesaveplot(args.o if args.o is None else args.o + "_sc_r{}i{}".format(resid[i], i), ".png")
 
-    plt.plot(angle_t[:, i])
+
+if args.onlyplot is None:
+    args.onlyplot = np.array(range(len(resid)))
+else:
+    logging.debug("Received onlyplot: {}".format(" ".join(map(str, args.onlyplot))))
+for i in xrange(len(resid)):
+    if i not in args.onlyplot:
+        continue
+    if args.sc:
+        plt.plot(x_t[:, i, 1], label="sin")
+        plt.plot(x_t[:, i, 0], label="cos")
+        plt.xlabel("time/100ps")
+        plt.ylabel("cos and sin of angle")
+        plt.ylim([-1, 1])
+        plt.title("timeseries for dihedral {}, resid {}".format(i, resid[i]))
+        plt.legend()
+        safesaveplot(args.o if args.o is None else args.o + "_sc_r{}i{}".format(resid[i], i), ".png")
+
+    plt.plot(angle_t[:, i], 'ko', markersize=2)
     plt.xlabel("time/100ps")
     plt.ylabel("Angle, degrees")
     plt.ylim([-180.0, 180.0])
-    plt.title("timeseries for dihedral {}, resid {}".format(i, resid[i]))
-    plt.legend()
-    safesaveplot(args.o if args.o is None else args.o + "_angle_r{}i{}".format(resid[i], i), ".png")
+    if args.chromo is None:
+        plt.title("timeseries for dihedral {}, resid {}".format(i, resid[i]))
+    else:
+        plt.title("timeseries for dihedral {}, r{}::c{}".format(i, resid[i], args.chromo))
+    # Include cdc in the figure
+    ax_left  = plt.gca()
+    ax_right = ax_left.twinx()
+    rrid = rrid2resid_4BCL.resid2rrid_4BCL(resid[i])
+    ax_right.plot(cdc[:,rrid], "r.-", linewidth=.2, markersize=.5)
+    ax_right.set_ylabel("cdc shift, cm$^{-1}$", color='r')
+    mean_shift = np.mean(cdc[:,rrid])
+    ax_right.set_ylim(mean_shift - 50, mean_shift + 50)
+    for tl in ax_right.get_yticklabels():
+        tl.set_color('r')
+    safesaveplot(args.o if args.o is None else args.o + "_r{}i{}".format(resid[i], i), ".png")
 

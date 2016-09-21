@@ -54,7 +54,7 @@ cd $MYDIR/output
 # SYSTEM
 # done
 
-trjcat -f $MYDIR/md500-${JOB}-R{1..320}.xtc -o $MYDIR/output/ALL_md500.xtc -dt 100
+trjcat -f $MYDIR/md500-${JOB}-R{1..525}.xtc -o $MYDIR/output/job525_md500.xtc -dt 100
 
 # Make the TEMP_MDP file!
 TEMP_MDP="$(mktemp -p $MYDIR/output).mdp"
@@ -77,21 +77,21 @@ grompp -f $TEMP_MDP -c $MYDIR/output/__CENTER.gro -o $MYDIR/output/__CENTER.tpr 
        -p $FMO_CONF/4BCL_pp.top
 
 # Center the protein for nice periodic boundaries
-trjconv -f ALL_md500.xtc     -o ALL_md500-PBC.xtc \
+trjconv -f job525_md500.xtc     -o job525_md500-PBC.xtc \
         -s $MYDIR/output/__CENTER.tpr -dt 100 -center -ur compact -pbc mol << SYSTEM
 1
 0
 SYSTEM
 
 # Fit & rotate with the BCL molecules at the center
-trjconv -f ALL_md500-PBC.xtc -o ALL_md500-FIT.xtc \
+trjconv -f job525_md500-PBC.xtc -o job525_md500-FIT.xtc \
         -s $MYDIR/output/__CENTER.tpr -dt 100 -fit rot+trans << SYSTEM
 19
 0
 SYSTEM
 
 # Split trajectory into atoms
-trjconv -f ALL_md500-FIT.xtc -o ALL_md500-SEP-.gro \
+trjconv -f job525_md500-FIT.xtc -o job525_md500-SEP-.gro \
         -s $MYDIR/output/__CENTER.tpr -dt 100 -sep << SYSTEM 
 0
 SYSTEM
